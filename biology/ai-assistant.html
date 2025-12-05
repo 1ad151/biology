@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI助手 - 生物多样性保护</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ai-styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon">🌿</span>
+                <span class="logo-text">生物多样性</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="about.html">关于</a></li>
+                <li><a href="species.html">濒危物种</a></li>
+                <li><a href="ecosystem.html">生态系统</a></li>
+                <li><a href="action.html">保护行动</a></li>
+                <li><a href="ai-assistant.html" class="active">AI助手</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>🤖 AI智能助手</h1>
+            <p>使用人工智能技术，为您提供生物多样性相关的智能服务</p>
+        </div>
+    </section>
+
+    <section class="page-content">
+        <div class="container">
+            <!-- AI功能卡片 -->
+            <div class="ai-features-grid">
+                <div class="ai-feature-card" onclick="openChatBot()">
+                    <div class="ai-feature-icon">💬</div>
+                    <h3>AI问答助手</h3>
+                    <p>向AI提问关于生物多样性的任何问题，获得专业解答</p>
+                    <button class="btn btn-primary">开始对话</button>
+                </div>
+
+                <div class="ai-feature-card" onclick="openSpeciesSearch()">
+                    <div class="ai-feature-icon">🔍</div>
+                    <h3>智能物种搜索</h3>
+                    <p>使用AI技术快速搜索和了解各种生物物种信息</p>
+                    <button class="btn btn-primary">开始搜索</button>
+                </div>
+
+                <div class="ai-feature-card" onclick="openSpeciesIdentify()">
+                    <div class="ai-feature-icon">📷</div>
+                    <h3>AI物种识别</h3>
+                    <p>上传图片，AI帮您识别动植物 species（演示功能）</p>
+                    <button class="btn btn-primary">识别物种</button>
+                </div>
+
+                <div class="ai-feature-card" onclick="openActionRecommend()">
+                    <div class="ai-feature-icon">💡</div>
+                    <h3>个性化保护建议</h3>
+                    <p>AI根据您的兴趣和情况，推荐适合的保护行动</p>
+                    <button class="btn btn-primary">获取建议</button>
+                </div>
+            </div>
+
+            <!-- AI聊天机器人 -->
+            <div id="chatBotModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>🤖 AI问答助手</h2>
+                        <span class="close" onclick="closeChatBot()">&times;</span>
+                    </div>
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message bot-message">
+                                <div class="message-content">
+                                    <strong>AI助手：</strong>您好！我是生物多样性AI助手，可以回答您关于生物多样性、濒危物种、生态系统和保护行动的问题。请问有什么可以帮助您的吗？
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input type="text" id="chatInput" placeholder="输入您的问题..." class="chat-input">
+                            <button onclick="sendMessage()" class="btn btn-primary">发送</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 智能搜索 -->
+            <div id="searchModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>🔍 智能物种搜索</h2>
+                        <span class="close" onclick="closeSpeciesSearch()">&times;</span>
+                    </div>
+                    <div class="search-container">
+                        <input type="text" id="speciesSearchInput" placeholder="输入物种名称或关键词..." class="search-input">
+                        <button onclick="performSearch()" class="btn btn-primary">搜索</button>
+                        <div id="searchResults" class="search-results"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 物种识别 -->
+            <div id="identifyModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>📷 AI物种识别</h2>
+                        <span class="close" onclick="closeSpeciesIdentify()">&times;</span>
+                    </div>
+                    <div class="identify-container">
+                        <div class="upload-area" id="uploadArea">
+                            <p>📤 点击或拖拽图片到这里</p>
+                            <p class="upload-hint">支持 JPG、PNG 格式（演示功能）</p>
+                            <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                        </div>
+                        <div id="identifyResults" class="identify-results"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 保护建议 -->
+            <div id="recommendModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>💡 个性化保护建议</h2>
+                        <span class="close" onclick="closeActionRecommend()">&times;</span>
+                    </div>
+                    <div class="recommend-container">
+                        <div class="recommend-form">
+                            <label>您的兴趣领域：</label>
+                            <select id="interestSelect" class="form-select">
+                                <option value="animals">动物保护</option>
+                                <option value="plants">植物保护</option>
+                                <option value="ocean">海洋保护</option>
+                                <option value="forest">森林保护</option>
+                                <option value="climate">气候变化</option>
+                            </select>
+                            <label>您的时间安排：</label>
+                            <select id="timeSelect" class="form-select">
+                                <option value="daily">每天都有时间</option>
+                                <option value="weekly">每周有时间</option>
+                                <option value="monthly">每月有时间</option>
+                                <option value="occasional">偶尔参与</option>
+                            </select>
+                            <label>您的参与方式偏好：</label>
+                            <select id="methodSelect" class="form-select">
+                                <option value="online">线上活动</option>
+                                <option value="offline">线下活动</option>
+                                <option value="both">线上线下都可以</option>
+                            </select>
+                            <button onclick="getRecommendations()" class="btn btn-primary">获取AI建议</button>
+                        </div>
+                        <div id="recommendResults" class="recommend-results"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI技术说明 -->
+            <div class="content-section" style="margin-top: 3rem;">
+                <h2>AI技术应用说明</h2>
+                <div class="tech-info">
+                    <div class="tech-card">
+                        <h3>🤖 自然语言处理 (NLP)</h3>
+                        <p>使用NLP技术理解您的提问，提供准确的生物多样性相关信息。AI助手基于知识库和模式匹配，能够回答常见问题。</p>
+                    </div>
+                    <div class="tech-card">
+                        <h3>🔍 智能搜索算法</h3>
+                        <p>采用语义搜索技术，不仅匹配关键词，还能理解搜索意图，为您找到最相关的物种和生态系统信息。</p>
+                    </div>
+                    <div class="tech-card">
+                        <h3>📷 图像识别技术</h3>
+                        <p>使用计算机视觉技术识别动植物图片。通过深度学习模型分析图像特征，识别物种类型（演示功能）。</p>
+                    </div>
+                    <div class="tech-card">
+                        <h3>💡 推荐系统</h3>
+                        <p>基于您的兴趣、时间和偏好，使用机器学习算法推荐最适合您的保护行动方案。</p>
+                    </div>
+                </div>
+                <p style="margin-top: 2rem; padding: 1rem; background: var(--light-color); border-radius: 10px; color: var(--text-light);">
+                    <strong>注意：</strong>本网站的AI功能为演示版本，使用模拟数据和规则引擎实现。实际应用中可以接入真实的AI API（如OpenAI、百度AI等）来提供更强大的功能。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>致力于生物多样性保护的教育和宣传，让更多人了解并参与到保护行动中来。</p>
+                </div>
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="about.html">关于</a></li>
+                        <li><a href="species.html">濒危物种</a></li>
+                        <li><a href="ecosystem.html">生态系统</a></li>
+                        <li><a href="action.html">保护行动</a></li>
+                        <li><a href="ai-assistant.html">AI助手</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>联系方式</h3>
+                    <p>邮箱: example@biodiversity.org (示例)</p>
+                    <p>电话: 400-000-0000 (示例)</p>
+                    <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem;">* 以上为示例信息，非真实联系方式</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 生物多样性保护网站. 所有权利保留.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="ai-script.js"></script>
+</body>
+</html>
+
